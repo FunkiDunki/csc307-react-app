@@ -102,13 +102,14 @@ app.get('/users/:id', (req, res) => {
 
 app.post('/users', (req, res) => {
     const userToAdd = req.body;
-    addUser(userToAdd);
-    res.send();
+    userToAdd['id'] = Math.random().toString(36).substring(3, 7);
+    addUser(userToAdd); 
+    res.status(201).send(userToAdd);
 })
 
 app.delete('/users/:id', (req, res) => {
     removeUser(req.params['id']);
-    res.send();
+    res.status(201).send();
 });
 
 app.listen(port, () => {

@@ -8,31 +8,7 @@ app.use(express.json());
 
 const users = { 
    users_list : [
-      { 
-         id : 'xyz789',
-         name : 'Charlie',
-         job: 'Janitor',
-      },
-      {
-         id : 'abc123', 
-         name: 'Mac',
-         job: 'Bouncer',
-      },
-      {
-         id : 'ppp222', 
-         name: 'Mac',
-         job: 'Professor',
-      }, 
-      {
-         id: 'yat999', 
-         name: 'Dee',
-         job: 'Aspring actress',
-      },
-      {
-         id: 'zap555', 
-         name: 'Dennis',
-         job: 'Bartender',
-      }
+      
    ]
 }
 
@@ -61,9 +37,12 @@ const addUser = (user) => {
 
 const removeUser = (id) => {
     const idxToRemove = users['users_list'].findIndex(user => user['id'] === id);
-    if (idxToRemove > -1) {
-        users['users_list'].splice(idxToRemove, 1);
+    if (idxToRemove == -1) {
+        //we couldn't find the userid so we wont delete it
+        return false;
     }
+    users['users_list'].splice(idxToRemove, 1);
+    return true;//we successfully deleted the user
 }
 
 
@@ -108,8 +87,14 @@ app.post('/users', (req, res) => {
 })
 
 app.delete('/users/:id', (req, res) => {
-    removeUser(req.params['id']);
-    res.status(201).send();
+    if (removeUser(req.params['id'])) {
+        //we succeeded
+        res.status(204).send();
+    }
+    else {
+        //we couldn't find and delete the user
+        res.status(404).send();
+    }
 });
 
 app.listen(port, () => {

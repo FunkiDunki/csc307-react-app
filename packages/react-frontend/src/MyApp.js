@@ -42,7 +42,7 @@ function MyApp() {
         
         deleteUser(characters[index]['id'])
             .then((response) => {
-                if (response.status === 201) {
+                if (response.status === 204) {
                     const updated = characters.filter((character, i) => {
                     return i != index
                     });
